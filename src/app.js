@@ -7,14 +7,16 @@ const { NODE_ENV } = require('./config');
 
 const app = express();
 
-const morganOption = NODE_ENV === 'production' ? 'tiny' : 'common';
-
-app.use(morgan(morganOption));
+app.use(
+	morgan(NODE_ENV === 'production' ? 'tiny' : 'common', {
+		skip: () => NODE_ENV === 'test'
+	})
+);
 app.use(cors());
 app.use(helmet());
 
 app.get('/', (req, res) => {
-	res.send('Hello, boilerplate!');
+	res.send('Find The Recipe API!');
 });
 
 app.use(function errorHandler(error, req, res, next) {
