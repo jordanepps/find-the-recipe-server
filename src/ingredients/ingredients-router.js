@@ -6,16 +6,16 @@ const ingredientsRouter = express.Router();
 const jsonBodyParser = express.json();
 
 ingredientsRouter.route('/').get(jsonBodyParser, (req, res, next) => {
-	const { image_link } = req.body;
-	const image = { image_link };
+	const { image } = req.query;
+	const imageLink = { image };
 
-	for (const [key, value] of Object.entries(image))
+	for (const [key, value] of Object.entries(imageLink))
 		if (value == null)
 			return res.status(400).json({
-				error: `Missing '${key}' in request body`
+				error: `Missing ${key} in request parameter`
 			});
 
-	IngredientsService.getIngredients(image_link)
+	IngredientsService.getIngredients(imageLink.image)
 		.then(results => {
 			const ingredients = IngredientsService.handleIngredients(results);
 			res.send(ingredients).end();
@@ -23,8 +23,6 @@ ingredientsRouter.route('/').get(jsonBodyParser, (req, res, next) => {
 		.catch(err => {
 			res.status(400).json({ error: 'input provided is not a valid image' });
 		});
-
-	// res.status(201).end();
 });
 
 module.exports = ingredientsRouter;

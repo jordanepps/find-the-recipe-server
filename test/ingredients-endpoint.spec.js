@@ -5,14 +5,13 @@ describe('ingredients Endpoint', () => {
 		it(`responds with 400 when 'image_link' is missing`, () => {
 			return supertest(app)
 				.get('/api/ingredients')
-				.expect(400, { error: `Missing 'image_link' in request body` });
+				.expect(400, { error: `Missing image in request parameter` });
 		});
 
 		it(`responds with 400 when a broken link is provided`, () => {
-			const badLink = { image_link: 'https://not-a-real-image.jpg' };
+			const badLink = 'https://not-a-real-image.jpg';
 			return supertest(app)
-				.get('/api/ingredients')
-				.send(badLink)
+				.get(`/api/ingredients?image=${badLink}`)
 				.expect(400, { error: `input provided is not a valid image` });
 		});
 	});
