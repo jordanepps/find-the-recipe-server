@@ -12,6 +12,18 @@ const IngredientsService = {
 				return results;
 			})
 			.catch(err => err);
+	},
+	handleIngredients(results) {
+		const data = results.outputs[0].data.concepts;
+
+		const ingredients = data.map(ingredient => {
+			return {
+				name: ingredient.name,
+				value: Math.floor(ingredient.value * 100)
+			};
+		});
+
+		return ingredients;
 	}
 };
 
