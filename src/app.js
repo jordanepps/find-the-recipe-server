@@ -5,7 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
 
-const recipesRouter = require('./recipes/recipes-router');
+const ingredientsRouter = require('./ingredients/ingredients-router');
 
 const app = express();
 
@@ -17,7 +17,7 @@ app.use(
 app.use(cors());
 app.use(helmet());
 
-app.use('/api/recipes', recipesRouter);
+app.use('/api/ingredients', ingredientsRouter);
 
 app.get('/', (req, res) => {
 	res.send('Find The Recipe API!');

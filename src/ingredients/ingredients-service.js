@@ -4,17 +4,15 @@ const clarifaiApp = new Clarifai.App({
 });
 const model = 'bd367be194cf45149e75f01d59f77ba7';
 
-const RecipesService = {
+const IngredientsService = {
 	getIngredients(image) {
 		return clarifaiApp.models
 			.predict(model, image)
 			.then(results => {
 				return results;
 			})
-			.catch(error => {
-				console.log(error);
-			});
+			.catch(err => err);
 	}
 };
 
-module.exports = RecipesService;
+module.exports = IngredientsService;
