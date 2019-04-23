@@ -8,9 +8,7 @@ const IngredientsService = {
 	getIngredients(image) {
 		return clarifaiApp.models
 			.predict(model, image)
-			.then(results => {
-				return results;
-			})
+			.then(results => results)
 			.catch(err => err);
 	},
 	handleIngredients(results) {

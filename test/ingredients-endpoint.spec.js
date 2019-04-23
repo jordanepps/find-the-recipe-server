@@ -1,7 +1,7 @@
 const app = require('../src/app');
 
 describe('ingredients Endpoint', () => {
-	describe('POST /api/ingredients', () => {
+	describe('GET /api/ingredients', () => {
 		it(`responds with 400 when 'image_link' is missing`, () => {
 			return supertest(app)
 				.get('/api/ingredients')
