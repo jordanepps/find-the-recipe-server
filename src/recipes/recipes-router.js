@@ -9,7 +9,6 @@ recipesRouter.route('/').get(jsonBodyParser, (req, res, next) => {
 	let recipes;
 	RecipesSerivce.getRecipes(i)
 		.then(results => {
-			console.log(results.hits);
 			recipes = results.hits;
 			res.send(recipes).end();
 		})

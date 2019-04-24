@@ -6,7 +6,7 @@ const endpointKeys = `&app_id=${process.env.EDAMAM_ID}&app_key=${
 
 const RecipesService = {
 	getRecipes(ingriedients) {
-		const ingridentsParam = `q=${ingriedients.split(' ').join('+')}`;
+		const ingridentsParam = `q=${ingriedients.split(' ').join('%20')}`;
 		const recipeRequest = `${endpoint}${ingridentsParam}${endpointKeys}`;
 		return fetch(recipeRequest, {
 			headers: { 'content-type': 'application/json' }
