@@ -13,6 +13,22 @@ const RecipesService = {
 		})
 			.then(res => res.json())
 			.catch(err => err);
+	},
+	formatRecipe(obj) {
+		const { recipe } = obj;
+		return {
+			id: recipe.uri,
+			name: recipe.label,
+			image: recipe.image,
+			source: recipe.source,
+			source_url: recipe.url,
+			share_url: recipe.shareAs,
+			health_labels: recipe.healthLabels,
+			cautions: recipe.cautions,
+			servings: recipe.yield,
+			calories: recipe.calories,
+			ingredient_lines: recipe.ingredientLines
+		};
 	}
 };
 

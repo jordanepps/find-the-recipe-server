@@ -14,7 +14,9 @@ recipesRouter.route('/').get(jsonBodyParser, (req, res, next) => {
 	RecipesSerivce.getRecipes(i)
 		.then(results => {
 			recipes = results.hits;
-			res.send(recipes).end();
+			const formattedRecipes = recipes.map(RecipesSerivce.formatRecipe);
+			// console.log(recipes.map(i => i.recipe.uri));
+			res.send(formattedRecipes).end();
 		})
 		.catch(err => {
 			res.status(400).json({ error: 'Ingredients provided are not valid' });
