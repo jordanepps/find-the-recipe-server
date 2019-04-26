@@ -15,7 +15,6 @@ recipesRouter.route('/').get(jsonBodyParser, (req, res, next) => {
 		.then(results => {
 			recipes = results.hits;
 			const formattedRecipes = recipes.map(RecipesSerivce.formatRecipe);
-			// console.log(recipes.map(i => i.recipe.uri));
 			res.send(formattedRecipes).end();
 		})
 		.catch(err => {

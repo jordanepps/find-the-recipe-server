@@ -23,8 +23,9 @@ const IngredientsService = {
 					name,
 					value
 				};
-			});
-
+			})
+			.slice(0, 4);
+		//TODO:Figure out a good slice. Too high and it may not find ingredients, too low and accuracy is lost
 		return ingredients;
 	}
 };
