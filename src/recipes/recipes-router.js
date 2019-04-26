@@ -6,6 +6,10 @@ const jsonBodyParser = express.json();
 
 recipesRouter.route('/').get(jsonBodyParser, (req, res, next) => {
 	const { i } = req.query;
+
+	if (i == null)
+		return res.status(400).json({ error: `Missing 'i' in request parameter` });
+
 	let recipes;
 	RecipesSerivce.getRecipes(i)
 		.then(results => {
@@ -13,7 +17,7 @@ recipesRouter.route('/').get(jsonBodyParser, (req, res, next) => {
 			res.send(recipes).end();
 		})
 		.catch(err => {
-			console.log(err);
+			res.status(400).json({ error: 'Ingredients provided are not valid' });
 		});
 });
 

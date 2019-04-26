@@ -20,7 +20,7 @@ ingredientsRouter.route('/').get(jsonBodyParser, (req, res, next) => {
 			res.send(ingredients).end();
 		})
 		.catch(err => {
-			res.status(400).json({ error: 'input provided is not a valid image' });
+			res.status(400).json({ error: 'Input provided is not a valid image' });
 		});
 });
 

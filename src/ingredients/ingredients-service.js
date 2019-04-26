@@ -14,12 +14,16 @@ const IngredientsService = {
 	handleIngredients(results) {
 		const data = results.outputs[0].data.concepts;
 
-		const ingredients = data.map(ingredient => {
-			return {
-				name: ingredient.name,
-				value: Math.floor(ingredient.value * 100)
-			};
-		});
+		const ingredients = data
+			.filter(ingredient => Math.floor(ingredient.value * 100) >= 83)
+			.map(ingredient => {
+				const name = ingredient.name.replace(/\s+/g, '');
+				const value = Math.floor(ingredient.value * 100);
+				return {
+					name,
+					value
+				};
+			});
 
 		return ingredients;
 	}
