@@ -1,0 +1,6 @@
+CREATE TABLE user_recipe
+(
+    id SERIAL PRIMARY KEY,
+    recipe_id INTEGER REFERENCES recipes(id) ON DELETE CASCADE NOT NULL,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE NOT NULL
+);
