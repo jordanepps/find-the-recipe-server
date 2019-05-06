@@ -128,7 +128,7 @@ describe('Users Endpoint', () => {
 			});
 		});
 		context('Happy path', () => {
-			it.only(`responds 201, serialized user, storing bcrypted password`, () => {
+			it(`responds 201, serialized user, storing bcrypted password`, () => {
 				const newUser = {
 					user_name: 'test user_name',
 					password: '11AAaa!!',
@@ -138,7 +138,28 @@ describe('Users Endpoint', () => {
 				return supertest(app)
 					.post('/api/users')
 					.send(newUser)
-					.expect(201);
+					.expect(201)
+					.expect(res => {
+						expect(res.body).to.have.property('id');
+						expect(res.body.user_name).to.eql(newUser.user_name);
+						expect(res.body.full_name).to.eql(newUser.full_name);
+						expect(res.body).to.not.have.property('password');
+						expect(res.headers.location).to.eql(`/api/users/${res.body.id}`);
+					})
+					.expect(res => {
+						db.from('users')
+							.select('*')
+							.where({ id: res.body.id })
+							.first()
+							.then(row => {
+								expect(row.user_name).to.eql(newUser.user_name);
+								expect(row.full_name).to.eql(newUser.full_name);
+								return bcrypt.compare(newUser.password, row.password);
+							})
+							.then(compareMatch => {
+								expect(compareMatch).to.be.true;
+							});
+					});
 			});
 		});
 	});
