@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const testBurgerImage = `https://clarifai.com/cms-assets/20180320212159/food-003.jpg`;
 
 function makeUsersArray() {
@@ -87,11 +88,20 @@ function seedUsers(db, users) {
 		);
 }
 
+function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
+	const token = jwt.sign({ user_id: user.id }, secret, {
+		subject: user.user_name,
+		algorithm: 'HS256'
+	});
+	return `Bearer ${token}`;
+}
+
 module.exports = {
 	testBurgerImage,
 	makeTestBurgerIngredients,
 	makeUsersArray,
 	makeFixtures,
 	cleanTables,
-	seedUsers
+	seedUsers,
+	makeAuthHeader
 };
