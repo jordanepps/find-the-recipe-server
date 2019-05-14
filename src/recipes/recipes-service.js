@@ -14,8 +14,31 @@ const RecipesService = {
 			.then(res => res.json())
 			.catch(err => err);
 	},
+	getRecipe(recipe) {
+		const request = `${endpoint}r=${encodeURIComponent(recipe)}${endpointKeys}`;
+		return fetch(request, {
+			headers: { 'content-type': 'application/json' }
+		})
+			.then(res => res.json())
+			.catch(err => err);
+	},
 	formatRecipe(obj) {
 		const { recipe } = obj;
+		if (!recipe) {
+			return {
+				id: obj.uri,
+				name: obj.label,
+				image: obj.image,
+				source: obj.source,
+				source_url: obj.url,
+				share_url: obj.shareAs,
+				health_labels: obj.healthLabels,
+				cautions: obj.cautions,
+				servings: obj.yield,
+				calories: obj.calories,
+				ingredient_lines: obj.ingredientLines
+			};
+		}
 		return {
 			id: recipe.uri,
 			name: recipe.label,

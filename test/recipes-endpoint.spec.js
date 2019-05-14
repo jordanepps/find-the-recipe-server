@@ -5,7 +5,7 @@ describe('Recipes Endpoint', () => {
 		it(`responds with 400 when 'i' is missing`, () => {
 			return supertest(app)
 				.get('/api/recipes')
-				.expect(400, { error: `Missing 'i' in request parameter` });
+				.expect(400, { error: `Missing 'i' or 'r' in request parameter` });
 		});
 	});
 });

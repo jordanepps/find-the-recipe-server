@@ -1,25 +1,41 @@
 const express = require('express');
-const RecipesSerivce = require('./recipes-service');
+const RecipesService = require('./recipes-service');
 
 const recipesRouter = express.Router();
 const jsonBodyParser = express.json();
 
 recipesRouter.route('/').get(jsonBodyParser, (req, res, next) => {
-	const { i } = req.query;
+	const { i, r } = req.query;
 
-	if (i == null)
-		return res.status(400).json({ error: `Missing 'i' in request parameter` });
+	if (i == null && r == null)
+		return res
+			.status(400)
+			.json({ error: `Missing 'i' or 'r' in request parameter` });
 
-	let recipes;
-	RecipesSerivce.getRecipes(i)
-		.then(results => {
-			recipes = results.hits;
-			const formattedRecipes = recipes.map(RecipesSerivce.formatRecipe);
-			res.send(formattedRecipes).end();
-		})
-		.catch(err => {
-			res.status(400).json({ error: 'Ingredients provided are not valid' });
-		});
+	if (r == null && i != null) {
+		let recipes;
+		RecipesService.getRecipes(i)
+			.then(results => {
+				recipes = results.hits;
+				const formattedRecipes = recipes.map(RecipesService.formatRecipe);
+				res.send(formattedRecipes).end();
+			})
+			.catch(err => {
+				res.status(400).json({ error: 'Ingredients provided are not valid' });
+			});
+	}
+
+	if (i == null && r != null) {
+		RecipesService.getRecipe(r)
+			.then(results => {
+				const formattedRecipe = results.map(RecipesService.formatRecipe);
+
+				res.send(formattedRecipe[0]).end();
+			})
+			.catch(err => {
+				res.status(400).json({ error: 'Recipe provided is not valid' });
+			});
+	}
 });
 
 module.exports = recipesRouter;
