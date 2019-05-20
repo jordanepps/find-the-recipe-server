@@ -5,6 +5,16 @@ const endpointKeys = `&app_id=${process.env.EDAMAM_ID}&app_key=${
 }`;
 
 const RecipesService = {
+	// getAllRecipes(db) {
+	// 	return db.from('recipes').select('*');
+	// },
+	getRecipeById(db, id) {
+		return db
+			.from('recipes')
+			.select('*')
+			.where('id', id)
+			.first();
+	},
 	getRecipes(ingriedients) {
 		const ingridentsParam = `q=${ingriedients.split(' ').join('%20')}`;
 		const recipeRequest = `${endpoint}${ingridentsParam}${endpointKeys}`;
@@ -52,6 +62,14 @@ const RecipesService = {
 			calories: recipe.calories,
 			ingredient_lines: recipe.ingredientLines
 		};
+	},
+	insertRecipe(db, newRecipe) {
+		return db
+			.insert(newRecipe)
+			.into('recipes')
+			.returning('*')
+			.then(([recipe]) => recipe)
+			.then(recipe => RecipesService.getRecipeById(db, recipe.id));
 	}
 };
 

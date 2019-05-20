@@ -9,6 +9,7 @@ const ingredientsRouter = require('./ingredients/ingredients-router');
 const recipesRouter = require('./recipes/recipes-router');
 const usersRouter = require('./users/users-router');
 const authRouter = require('./auth/auth-router');
+const favoritesRouter = require('./favorites/favorites-router');
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use('/api/ingredients', ingredientsRouter);
 app.use('/api/recipes', recipesRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/favorites', favoritesRouter);
 
 app.get('/', (req, res) => {
 	res.send('Find The Recipe API!');

@@ -1,6 +1,7 @@
 CREATE TABLE recipes
 (
     id SERIAL PRIMARY KEY,
+    recipe_code TEXT NOT NULL,
     recipe_name TEXT NOT NULL,
     image TEXT NOT NULL,
     source TEXT NOT NULL,
