@@ -11,7 +11,7 @@ const FavoritesService = {
 
 	getById(db, id) {
 		return FavoritesService.getAllFavorites(db)
-			.where('id', id)
+			.where('fav.id', id)
 			.first();
 	},
 	insertFavorite(db, user, favorite) {
@@ -27,6 +27,27 @@ const FavoritesService = {
 		return FavoritesService.getAllFavorites(db)
 			.where('user_id', userId)
 			.where('recipes.recipe_code', recipe_code);
+	},
+	removeFavorite(db, user, recipe) {
+		console.log(recipe.id);
+		return db
+			.from('recipes')
+			.select('*')
+			.where('recipe_code', recipe.id)
+			.first()
+			.then(recipe =>
+				db
+					.from('user_recipe')
+					.where('recipe_id', recipe.id)
+					.where('user_id', user.id)
+					.del()
+			)
+			.then(() =>
+				db
+					.from('recipes')
+					.where('recipe_code', recipe.id)
+					.del()
+			);
 	}
 };
 
