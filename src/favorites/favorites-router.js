@@ -77,13 +77,17 @@ favoritesRouter
 						: res.status(404).send('Recipe not in user favorite');
 				});
 		}
+		if (!recipe_code) {
+			AuthService.getUserWithUserName(req.app.get('db'), payload.sub)
+				.then(user => {
+					return FavoritesService.getAllFavoritesByUser(
+						req.app.get('db'),
+						user
+					);
+				})
 
-		AuthService.getUserWithUserName(req.app.get('db'), payload.sub)
-			.then(user => {
-				return FavoritesService.getAllFavoritesByUser(req.app.get('db'), user);
-			})
-
-			.then(favs => res.send(favs).end());
+				.then(favs => res.send(favs));
+		}
 	})
 	.delete(jsonBodyParser, (req, res, next) => {
 		const { recipe } = req.body;
@@ -97,11 +101,5 @@ favoritesRouter
 			.then(() => {
 				res.end();
 			});
-
-		// FavoritesService.removeFavorite(req.app.get('db'), '', recipe).then(r => {
-		// 	console.log(r);
-
-		// 	res.end();
-		// });
 	});
 module.exports = favoritesRouter;
