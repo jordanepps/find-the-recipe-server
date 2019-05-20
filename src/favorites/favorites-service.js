@@ -48,6 +48,20 @@ const FavoritesService = {
 					.where('recipe_code', recipe.id)
 					.del()
 			);
+	},
+	getAllFavoritesByUser(db, user) {
+		return FavoritesService.getAllFavorites(db)
+			.where('fav.user_id', user.id)
+			.then(recipeFav => {
+				let recipeIds = recipeFav.map(recipe => recipe.recipe_id);
+				return recipeIds;
+			})
+			.then(recipeIds => {
+				return db
+					.from('recipes')
+					.select('*')
+					.whereIn('id', recipeIds);
+			});
 	}
 };
 

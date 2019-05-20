@@ -62,19 +62,28 @@ favoritesRouter
 		const auth = req.get('Authorization');
 		const payload = AuthService.verifyJwt(auth.slice(7, auth.length));
 
+		if (recipe_code) {
+			AuthService.getUserWithUserName(req.app.get('db'), payload.sub)
+				.then(user => {
+					return FavoritesService.getFavoriteByUser(
+						req.app.get('db'),
+						user.id,
+						recipe_code
+					);
+				})
+				.then(fav => {
+					return fav.length >= 1
+						? res.end()
+						: res.status(404).send('Recipe not in user favorite');
+				});
+		}
+
 		AuthService.getUserWithUserName(req.app.get('db'), payload.sub)
 			.then(user => {
-				return FavoritesService.getFavoriteByUser(
-					req.app.get('db'),
-					user.id,
-					recipe_code
-				);
+				return FavoritesService.getAllFavoritesByUser(req.app.get('db'), user);
 			})
-			.then(fav => {
-				return fav.length >= 1
-					? res.end()
-					: res.status(404).send('Recipe not in user favorite');
-			});
+
+			.then(favs => res.send(favs).end());
 	})
 	.delete(jsonBodyParser, (req, res, next) => {
 		const { recipe } = req.body;
