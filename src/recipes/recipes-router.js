@@ -21,7 +21,7 @@ recipesRouter.route('/').get(jsonBodyParser, (req, res, next) => {
 				res.send(formattedRecipes).end();
 			})
 			.catch(err => {
-				res.status(400).json({ error: 'Ingredients provided are not valid' });
+				res.status(400).json({ error: err });
 			});
 	}
 
